@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import CategoryNavbar from '../../components/Navbar/CategoryNavbar';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import CategoryMarquee from '../../components/CategoryCards/categoryCardSlider';
+import HighlightBanner from '../../components/ProductHighlight/ProductHighlight';
+import ProductImageGallery from '../../components/ProductImageGallery/ProductImageGallery';
 
 export default function Products() {
   const [error, setError] = React.useState<string>('');
@@ -18,7 +21,7 @@ export default function Products() {
         const url = `${import.meta.env.VITE_API_URL}api/v1/products/list?page=1&limit=10${
           selectedCategory ? `&type=${selectedCategory}` : 'popular'
         }`;
-        
+
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -42,8 +45,35 @@ export default function Products() {
     <DashboardLayout>
       <CategoryNavbar onCategorySelect={handleCategorySelect} />
       <div className="p-4">
-        <h1 className="text-2xl font-bold">Product Listing</h1>
-        {/* <p className="text-gray-600 mt-2">All products will appear here.</p> */}
+        {/* <h1 className="text-2xl font-bold">Product Listing</h1> */}
+        <p className="text-gray-600 mt-2">LOOK FOR THESE</p>
+        {/* <hr /> */}
+
+        <div className='h-[60vh] w-full flex items-center justify-center'>
+          <CategoryMarquee type={selectedCategory}/>
+        </div>
+        {/* <hr /> */}
+
+
+            <HighlightBanner
+      title="Featured Winter Apparels"
+      subtitle="Handpicked for you"
+      description="Explore premium winter and semi-winter apparels that suits you. High quality, warm and cozzy."
+      primaryImage="http://localhost:3000/public/images/winter1.avif"
+      secondaryImage="http://localhost:3000/public/images/winter2.avif"
+      align="left"
+    />
+
+                <HighlightBanner
+      title="Featured Summer Apparels"
+      subtitle="Handpicked for you"
+      description="Explore premium summer apparels apparels for your next vacation. Feel free and easy."
+      primaryImage="http://localhost:3000/public/images/winter1.avif"
+      secondaryImage="http://localhost:3000/public/images/winter2.avif"
+      align="right"
+    />
+
+     <ProductImageGallery />
 
         {error && <p className="text-red-500 mt-4">Error: {error}</p>}
 
