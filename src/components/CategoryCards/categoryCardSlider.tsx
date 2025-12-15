@@ -11,7 +11,7 @@ const CategoryMarquee: React.FC<Props> = ({ type }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoryType = type || "popular";
+        const categoryType = type || "men";
         const res = await axios.get(`${import.meta.env.VITE_API_URL}api/v1/category/list?type=${categoryType}`);
         // take only first 5 records
         setCardData(res.data.data.slice(0, 5));

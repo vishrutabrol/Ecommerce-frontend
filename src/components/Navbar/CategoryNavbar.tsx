@@ -4,7 +4,7 @@ interface CategoryNavbarProps {
   onCategorySelect: (category: string) => void;
 }
 
-const categories = ['popular', 'men', 'women', 'children'];
+const categories = ['home', 'men', 'women', 'kids'];
 
 export default function CategoryNavbar({
   onCategorySelect,

@@ -18,8 +18,8 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const url = `${import.meta.env.VITE_API_URL}api/v1/products/list?page=1&limit=10${
-          selectedCategory ? `&type=${selectedCategory}` : 'popular'
+        const url = `${import.meta.env.VITE_API_URL}api/v1/products/list?page=1&limit=5${
+          selectedCategory ? `&type=${selectedCategory}` : 'men'
         }`;
 
         const response = await fetch(url);
@@ -73,7 +73,7 @@ export default function Products() {
       align="right"
     />
 
-     <ProductImageGallery />
+     <ProductImageGallery type={selectedCategory} />
 
         {error && <p className="text-red-500 mt-4">Error: {error}</p>}
 

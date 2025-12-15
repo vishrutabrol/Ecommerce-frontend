@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           <div className='m-4'>
               {products.length > 0 && (
           <PromotionalCard
-           imageUrl={`${import.meta.env.VITE_API_URL}${products[0].images[0]}`}
+           imageUrl={`${import.meta.env.VITE_API_URL}${products[8].images[0]}`}
            />
               )}
           </div>

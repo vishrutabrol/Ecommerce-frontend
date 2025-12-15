@@ -4,9 +4,10 @@ interface GalleryImage {
   id: string | number;
   url: string;
   alt?: string;
+  type: string;
 }
 
-const ProductImageGallery: React.FC = () => {
+const ProductImageGallery: React.FC<Props> = ({ type }) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,8 +18,9 @@ const ProductImageGallery: React.FC = () => {
         setLoading(true);
         setError('');
 
+        const categoryType = type || 'men';
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}api/v1/products/list`,
+          `${import.meta.env.VITE_API_URL}api/v1/products/list?type=${categoryType}`,
         );
 
         if (!response.ok) {
@@ -49,7 +51,7 @@ const ProductImageGallery: React.FC = () => {
     };
 
     fetchImages();
-  }, []);
+  }, [type]);
 
   if (loading) {
     return (
