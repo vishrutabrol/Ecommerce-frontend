@@ -1,10 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from "../../hooks/useAuth"; 
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+
+interface Product {
+  id: string;
+  name: string;
+  images: string;
+}
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
-    const { isLoggedIn, logout } = useAuth(); 
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<Product[]>([]);
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleChange = async (e: any) => {
+    const value = e.target.value;
+    setQuery(value);
+    if (value.length > 1) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}api/v1/products/list?search=${value}&page=1&count2`,
+        );
+        const data = await res.json();
+        console.log('DATA', data);
+        setResults(data.data);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+      }
+    } else {
+      setResults([]);
+    }
+  };
+
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/product-list`);
+    }
+  };
+
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
       <a href="/">
@@ -28,111 +64,149 @@ const Navbar = () => {
           />
         </svg>
       </a>
-
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-8">
-        {/* <a href="/">Home</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a> */}
-        <Link to="/">Home</Link>
-        <Link to="/products">Products</Link>
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
-        <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-          <input
-            className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Search products"
-          />
-          {/* Search icon */}
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M10.836 10.615 15 14.695"
-              stroke="#7A7B7D"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783"
-              stroke="#7A7B7D"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-
-        {/* Auth buttons */}
+        {' '}
+        <Link to="/">Home</Link> <Link to="/products">Products</Link>{' '}
+        <Link to="/about">About</Link> <Link to="/contact">Contact</Link>{' '}
+        {/* Search box */}{' '}
+        <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full relative">
+          {' '}
+          <form onSubmit={handleSearch} className="flex w-full items-center">
+            {' '}
+            <input
+              className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
+              type="text"
+              placeholder="Search products"
+              value={query}
+              onChange={handleChange}
+            />{' '}
+            <button type="submit">
+              {' '}
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                {' '}
+                <path
+                  d="M10.836 10.615 15 14.695"
+                  stroke="#7A7B7D"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />{' '}
+                <path
+                  d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783"
+                  stroke="#7A7B7D"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />{' '}
+              </svg>{' '}
+            </button>{' '}
+          </form>{' '}
+          {/* Suggestions dropdown */}{' '}
+          {results.length > 0 && (
+            <ul className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md mt-1 shadow-lg">
+              {results.map((product) => (
+                <li
+                  key={product.id}
+                  className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => navigate(`/product-list`)}
+                >
+                  {/* Product image */}
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}${product.images[0]}`} // adjust field name based on your API response
+                    alt={product.name}
+                    className="w-10 h-10 object-cover rounded"
+                  />
+                  {/* Product name */}
+                  <span>{product.name}</span>
+                </li>
+              ))}
+            </ul>
+          )}{' '}
+        </div>{' '}
+        {/* Auth buttons */}{' '}
         {!isLoggedIn ? (
           <>
+            {' '}
             <Link
               to="/login"
               className="cursor-pointer px-6 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full"
             >
-              Login
-            </Link>
+              {' '}
+              Login{' '}
+            </Link>{' '}
             <Link
               to="/signup"
               className="cursor-pointer px-6 py-2 bg-gray-200 hover:bg-gray-300 transition rounded-full"
             >
-              Signup
-            </Link>
+              {' '}
+              Signup{' '}
+            </Link>{' '}
           </>
         ) : (
           <button
             onClick={logout}
             className="cursor-pointer px-6 py-2 bg-red-500 hover:bg-red-600 transition text-white rounded-full"
           >
-            Logout
+            {' '}
+            Logout{' '}
           </button>
-        )}
-      </div>
-
-      {/* Mobile Menu Toggle */}
+        )}{' '}
+      </div>{' '}
+      {/* Mobile Menu Toggle */}{' '}
       <button
         onClick={() => setOpen(!open)}
         aria-label="Menu"
         className="sm:hidden"
       >
+        {' '}
+        {/* Hamburger icon */}{' '}
         <svg width="21" height="15" viewBox="0 0 21 15" fill="none">
-          <rect width="21" height="1.5" rx=".75" fill="#426287" />
-          <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
-          <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
-        </svg>
-      </button>
-
-      {/* Mobile Menu */}
+          {' '}
+          <rect width="21" height="1.5" rx=".75" fill="#426287" />{' '}
+          <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />{' '}
+          <rect
+            x="6"
+            y="13"
+            width="15"
+            height="1.5"
+            rx=".75"
+            fill="#426287"
+          />{' '}
+        </svg>{' '}
+      </button>{' '}
+      {/* Mobile Menu */}{' '}
       <div
         className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}
       >
+        {' '}
         <Link to="/" className="block">
           Home
-        </Link>
+        </Link>{' '}
         <Link to="/products" className="block">
           Products
-        </Link>
+        </Link>{' '}
         <Link to="/about" className="block">
           About
-        </Link>
+        </Link>{' '}
         <Link to="/contact" className="block">
           Contact
-        </Link>
-
+        </Link>{' '}
         {!isLoggedIn ? (
           <>
+            {' '}
             <Link
               to="/login"
               className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm"
             >
               Login
-            </Link>
+            </Link>{' '}
             <Link
               to="/signup"
               className="cursor-pointer px-6 py-2 mt-2 bg-gray-200 hover:bg-gray-300 transition rounded-full text-sm"
             >
               Signup
-            </Link>
+            </Link>{' '}
           </>
         ) : (
           <button
@@ -141,10 +215,9 @@ const Navbar = () => {
           >
             Logout
           </button>
-        )}
-      </div>
+        )}{' '}
+      </div>{' '}
     </nav>
   );
 };
-
 export default Navbar;

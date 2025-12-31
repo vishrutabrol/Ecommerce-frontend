@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import CategoryNavbar from '../../components/Navbar/CategoryNavbar';
-import ProductCard from '../../components/ProductCard/ProductCard';
 import CategoryMarquee from '../../components/CategoryCards/categoryCardSlider';
 import HighlightBanner from '../../components/ProductHighlight/ProductHighlight';
 import ProductImageGallery from '../../components/ProductImageGallery/ProductImageGallery';
@@ -75,7 +74,7 @@ export default function Products() {
 
      <ProductImageGallery type={selectedCategory} />
 
-        {error && <p className="text-red-500 mt-4">Error: {error}</p>}
+        {/* {error && <p className="text-red-500 mt-4">Error: {error}</p>}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mt-6">
           {Array.isArray(products) && products.length > 0 ? (
@@ -101,7 +100,7 @@ export default function Products() {
               </p>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </DashboardLayout>
   );

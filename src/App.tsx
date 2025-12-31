@@ -5,6 +5,8 @@ import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import { Toaster } from 'react-hot-toast'
 import Products from './pages/Products/Products'
+import ProductsListing from './pages/ProductsListing/ProductsListing'
+import ProductDetail from './pages/ProductDetail/ProductDetail'
 
 
 const App: React.FC = () => (
@@ -16,6 +18,8 @@ const App: React.FC = () => (
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/products" element={<Products />} />
+        <Route path="/product-list" element={<ProductsListing />} />
+        <Route path="/product/:id" element={<ProductDetail  />} />
       </Routes>
   </Router>
 )
