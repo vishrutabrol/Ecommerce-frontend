@@ -35,7 +35,7 @@ const Login: React.FC = () => {
         login(data.fullName, email, data.token);
 
         toast.success("Login successful!");
-        navigate("/products");
+        navigate("/products", { replace: true});
       } else {
         toast.error(data.message || "Login failed. Try again.");
       }

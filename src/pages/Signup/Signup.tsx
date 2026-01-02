@@ -35,7 +35,7 @@ const Signup: React.FC = () => {
       if (res.ok && data.token) {
         login(name, email, data.token);
         toast.success('Signup successful!');
-        navigate('/');
+        navigate('/', { replace: true});
       } else {
         toast.error(`${data.message || 'Signup failed. Try again.'}`);
       }

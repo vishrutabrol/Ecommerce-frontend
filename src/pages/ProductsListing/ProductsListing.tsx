@@ -2,6 +2,7 @@ import toast from 'react-hot-toast';
 import ProductListCard from '../../components/ProductListCard/ProductListCard';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 export default function ProductsListing() {
   const [products, setProducts] = useState<any[]>([]);
@@ -12,9 +13,18 @@ export default function ProductsListing() {
   const [categoryId, setCategoryId] = useState('');
   const [priceRange, setPriceRange] = useState('');
   const [totalPages, setTotalPages] = useState(1);
+  const [searchParams] = useSearchParams();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category');
+    if (categoryFromUrl) {
+      setCategoryId(categoryFromUrl);
+      setPage(1);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -38,7 +48,7 @@ export default function ProductsListing() {
     fetchProducts();
   }, [page, type, categoryId, priceRange]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchCategory = async () => {
       setLoading(true);
       setError(null);
@@ -48,7 +58,7 @@ export default function ProductsListing() {
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         const data = await res.json();
         setCategories(data.data);
-        console.log("CATEGORY", data);
+        console.log('CATEGORY', data);
       } catch (error: any) {
         console.error('Error fetching products:', error);
         toast.error(error.message || 'Internal server error');
@@ -80,7 +90,9 @@ export default function ProductsListing() {
           </select>
 
           {/* Category Filter */}
-          <select value={categoryId} onChange={(e) => {
+          <select
+            value={categoryId}
+            onChange={(e) => {
               setCategoryId(e.target.value);
               setPage(1);
             }}

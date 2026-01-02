@@ -1,35 +1,36 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './pages/Home/Home'
-import Login from './pages/Login/Login'
-import Signup from './pages/Signup/Signup'
-import { Toaster } from 'react-hot-toast'
-import Products from './pages/Products/Products'
-import ProductsListing from './pages/ProductsListing/ProductsListing'
-import ProductDetail from './pages/ProductDetail/ProductDetail'
-import AboutUs from './pages/About/About'
-import ContactUs from './pages/Contact/ContactUs'
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
+import Signup from './pages/Signup/Signup';
+import { Toaster } from 'react-hot-toast';
+import Products from './pages/Products/Products';
+import ProductsListing from './pages/ProductsListing/ProductsListing';
+import ProductDetail from './pages/ProductDetail/ProductDetail';
+import AboutUs from './pages/About/About';
+import ContactUs from './pages/Contact/ContactUs';
 
 const App: React.FC = () => (
   <Router>
-    <Toaster position='top-right' />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+    <Toaster position="top-right" />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
-        <Route path="/products" element={<Products />} />
-        <Route path="/product-list" element={<ProductsListing />} />
-        <Route path="/product/:id" element={<ProductDetail  />} />
-        <Route path="/about" element={<AboutUs  />} />
-        <Route path="/contact" element={<ContactUs  />} />
-      </Routes>
+      <Route path="/products" element={<Products />} />
+      <Route path="/product-list" element={<ProductsListing />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/about" element={<AboutUs />} />
+      <Route path="/contact" element={<ContactUs />} />
+
+      {/* Optional: catch-all for 404 */}
+      <Route path="*" element={<div>404 - Page not found</div>} />
+    </Routes>
   </Router>
-)
+);
 
-export default App
-
+export default App;
 
 // import React from 'react';
 // import CardNav from './components/CardNav/CardNav';
@@ -37,7 +38,7 @@ export default App
 
 // const App = () => {
 //   const navItems = [
-  //     {
+//     {
 //       label: "About",
 //       bgColor: "#0D0716",
 //       textColor: "#fff",
