@@ -7,6 +7,8 @@ import { Toaster } from 'react-hot-toast'
 import Products from './pages/Products/Products'
 import ProductsListing from './pages/ProductsListing/ProductsListing'
 import ProductDetail from './pages/ProductDetail/ProductDetail'
+import AboutUs from './pages/About/About'
+import ContactUs from './pages/Contact/ContactUs'
 
 
 const App: React.FC = () => (
@@ -20,6 +22,8 @@ const App: React.FC = () => (
         <Route path="/products" element={<Products />} />
         <Route path="/product-list" element={<ProductsListing />} />
         <Route path="/product/:id" element={<ProductDetail  />} />
+        <Route path="/about" element={<AboutUs  />} />
+        <Route path="/contact" element={<ContactUs  />} />
       </Routes>
   </Router>
 )
