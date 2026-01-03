@@ -278,6 +278,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => {
               logout();
+              localStorage.removeItem('token');
               setOpen(false);
             }}
             className="mt-2 rounded-full bg-red-500 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white"

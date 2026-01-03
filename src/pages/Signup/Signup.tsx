@@ -33,9 +33,13 @@ const Signup: React.FC = () => {
       );
       const data = await res.json();
       if (res.ok && data.token) {
-        login(name, email, data.token);
+        login({
+          fullName: data.fullName,
+          email,
+          token: data.token,
+        });
         toast.success('Signup successful!');
-        navigate('/', { replace: true});
+        navigate('/', { replace: true });
       } else {
         toast.error(`${data.message || 'Signup failed. Try again.'}`);
       }
