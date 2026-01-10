@@ -1,26 +1,41 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   type: string;
 }
+
+interface Category {
+  id: string;
+  name: string;
+  images: string[];
+}
+
 const CategoryMarquee: React.FC<Props> = ({ type }) => {
   const [stopScroll, setStopScroll] = useState(false);
   const [cardData, setCardData] = useState<any[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoryType = type || "men";
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}api/v1/category/list?type=${categoryType}`);
+        const categoryType = type || 'men';
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}api/v1/category/list?type=${categoryType}`,
+        );
         // take only first 5 records
         setCardData(res.data.data.slice(0, 5));
       } catch (err) {
-        console.error("Error fetching categories:", err);
+        console.error('Error fetching categories:', err);
       }
     };
     fetchCategories();
   }, [type]);
+
+  const handleCategoryClick = (categoryId: number) => {
+    navigate(`/product-list?category=${categoryId}`);
+  };
 
   return (
     <>
@@ -43,15 +58,24 @@ const CategoryMarquee: React.FC<Props> = ({ type }) => {
         <div
           className="marquee-inner flex w-fit"
           style={{
-            animationPlayState: stopScroll ? "paused" : "running",
-            animationDuration: cardData.length * 2500 + "ms",
+            animationPlayState: stopScroll ? 'paused' : 'running',
+            animationDuration: cardData.length * 2500 + 'ms',
           }}
         >
           <div className="flex">
             {[...cardData, ...cardData].map((card, index) => (
               <div
-                key={index}
-                className="w-56 mx-4 h-[20rem] relative group hover:scale-90 transition-all duration-300"
+                key={`${card.id}-${index}`}
+                className="w-56 mx-4 h-[20rem] relative group hover:scale-95 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                onClick={() => handleCategoryClick(card.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleCategoryClick(card.id);
+                  }
+                }}
               >
                 <img
                   src={`${import.meta.env.VITE_API_URL}${card.images[0]}`}
