@@ -10,6 +10,8 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 import AboutUs from './pages/About/About';
 import ContactUs from './pages/Contact/ContactUs';
 import Cart from './pages/Cart/Cart';
+import PaymentSuccess from './pages/PaymentSuccess/PaymentSuccess';
+import CheckoutCancel from './pages/CheckoutCancel/CheckoutCancel';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 const App: React.FC = () => (
@@ -25,10 +27,12 @@ const App: React.FC = () => (
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/about" element={<AboutUs />} />
       <Route path="/contact" element={<ContactUs />} />
-        
-        <Route element={<ProtectedRoute />}>
-      <Route path="/cart" element={<Cart />} />
-        </Route>
+
+      <Route element={<ProtectedRoute />}>
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/checkout" element={<CheckoutCancel />} />
+      </Route>
 
       {/* Optional: catch-all for 404 */}
       <Route path="*" element={<div>404 - Page not found</div>} />
